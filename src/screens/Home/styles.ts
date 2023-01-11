@@ -48,23 +48,21 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
-  textCountCriadas: {
+  textCountCreated: {
     color: "#4EA8DE",
     fontWeight: "bold",
     fontSize: 16,
     paddingRight: 16,
   },
-  textCountConcluidas: {
+  textCountDone: {
     color: "#5E60CE",
     fontWeight: "bold",
     fontSize: 16,
     paddingRight: 16,
   },
   textNoTasks: {
-    color: "#d3d3d3",
-    fontWeight: "bold",
-    fontSize: 12,
+    color: "#808080",
+    fontSize: 16,
     textAlign: "center",
-    padding: 24,
   },
 });

@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   FlatList,
   Alert,
-  ScrollView,
 } from "react-native";
 import Task from "../../components/Task";
+import Icon from "@expo/vector-icons/Ionicons";
 
 import { styles } from "./styles";
 
@@ -18,17 +18,34 @@ export function Home() {
   const [isChecked, setIsChecked] = useState(false);
   const [tasks, setTasks] = useState<string[]>([]);
   const [taskName, setTaskName] = useState("");
+  const [countCreated, setCountCreated] = useState(0);
+  const [countDone, setCountDone] = useState(0);
 
   function handleAddTask() {
-    setTasks((oldstate) => [...oldstate, taskName]);
-    setTaskName("");
+    if (taskName === "") {
+      Alert.alert("Opa!", "Você você não pode cadastrar uma tarefa vazia.");
+    } else {
+      setTasks((oldstate) => [...oldstate, taskName]);
+      setTaskName("");
+      setCountCreated(countCreated + 1);
+    }
+  }
+
+  function handleConfirmRemove(name: string) {
+    setTasks((oldstate) => oldstate.filter((task) => task !== name));
+    setCountCreated(countCreated - 1);
   }
 
   function handleRemoveTask(name: string) {
-    // Alert.alert("OPA!", "Clicou em remover");
-    setTasks((oldstate) => oldstate.filter((task) => task !== name));
+    Alert.alert("Ooops!", `Você deseja deletar a seguinte task: "${name}" ?`, [
+      {
+        text: "Sim",
+        onPress: () => handleConfirmRemove(name),
+      },
+      { text: "Não" },
+    ]);
   }
-  function handleChangeChecked() {
+  function handleChangeChecked(task: any) {
     setIsChecked(!isChecked);
   }
   return (
@@ -59,8 +76,8 @@ export function Home() {
         </View>
 
         <View style={styles.containerCounts}>
-          <Text style={styles.textCountCriadas}>Criadas: 0</Text>
-          <Text style={styles.textCountConcluidas}>Concluídas: 0</Text>
+          <Text style={styles.textCountCreated}>Criadas: {countCreated}</Text>
+          <Text style={styles.textCountDone}>Concluídas: {countDone}</Text>
         </View>
 
         <FlatList
@@ -71,38 +88,23 @@ export function Home() {
               key={item}
               taskName={item}
               checked={isChecked}
-              onChangeValue={handleChangeChecked}
+              onChangeValue={() => handleChangeChecked(item)}
               onRemove={() => handleRemoveTask(item)}
             />
           )}
           ListEmptyComponent={() => (
-            <Text style={styles.textNoTasks}>
-              Poxa, você ainda não tem tarefas adicionadas. Não gostaria de
-              adicionar?
-            </Text>
+            <View style={{ justifyContent: "center", alignItems: "center" }}>
+              <Icon name="clipboard-outline" size={70} color={"#808080"} />
+
+              <Text style={styles.textNoTasks}>
+                Você ainda não tem tarefas cadastradas
+              </Text>
+              <Text style={styles.textNoTasks}>
+                Crie tarefas e organize seus itens a fazer
+              </Text>
+            </View>
           )}
         />
-
-        {/* <Task
-          taskName="Varrer a casa."
-          onRemove={handleRemoveTask}
-          checked={isChecked}
-          onChangeValue={handleChangeChecked}
-        />
-
-        <Task
-          taskName="Fazer feira no mercado as 20:00 na quarta-feira."
-          onRemove={handleRemoveTask}
-          checked={isChecked}
-          onChangeValue={handleChangeChecked}
-        />
-
-        <Task
-          taskName="Ir à academia as 9 da manhã no dia seguinte."
-          onRemove={handleRemoveTask}
-          checked={isChecked}
-          onChangeValue={handleChangeChecked}
-        /> */}
       </View>
     </>
   );
