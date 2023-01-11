@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   headerContainer: {
-    flex: 0.3,
+    flex: 0.2,
     backgroundColor: "#0D0D0D",
     padding: 24,
   },
@@ -20,7 +20,7 @@ export const styles = StyleSheet.create({
     width: "100%",
     flexDirection: "row",
     marginTop: -25,
-    marginBottom: 42,
+    marginBottom: 22,
   },
   input: {
     paddingLeft: 10,
@@ -30,8 +30,8 @@ export const styles = StyleSheet.create({
     padding: 8,
     marginRight: 8,
     color: "#fff",
-    fontSize: 13,
-    backgroundColor: "#454545",
+    fontSize: 16,
+    backgroundColor: "#262626",
   },
   button: {
     borderRadius: 8,
@@ -43,5 +43,28 @@ export const styles = StyleSheet.create({
   },
   buttonText: {
     color: "#fff",
+  },
+  containerCounts: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  textCountCriadas: {
+    color: "#4EA8DE",
+    fontWeight: "bold",
+    fontSize: 16,
+    paddingRight: 16,
+  },
+  textCountConcluidas: {
+    color: "#5E60CE",
+    fontWeight: "bold",
+    fontSize: 16,
+    paddingRight: 16,
+  },
+  textNoTasks: {
+    color: "#d3d3d3",
+    fontWeight: "bold",
+    fontSize: 12,
+    textAlign: "center",
+    padding: 24,
   },
 });
