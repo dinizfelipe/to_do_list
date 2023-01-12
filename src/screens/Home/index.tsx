@@ -14,9 +14,15 @@ import Icon from "@expo/vector-icons/Ionicons";
 
 import { styles } from "./styles";
 
+interface ITasks {
+  id: number;
+  isDone: boolean;
+  content: string;
+}
+
 export function Home() {
   const [isChecked, setIsChecked] = useState(false);
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [tasks, setTasks] = useState<ITasks[]>([]);
   const [taskName, setTaskName] = useState("");
   const [countCreated, setCountCreated] = useState(0);
   const [countDone, setCountDone] = useState(0);
@@ -25,28 +31,42 @@ export function Home() {
     if (taskName === "") {
       Alert.alert("Opa!", "Você você não pode cadastrar uma tarefa vazia.");
     } else {
-      setTasks((oldstate) => [...oldstate, taskName]);
+      setTasks((oldstate) => [
+        ...oldstate,
+        {
+          id: Math.floor(Math.random() * 1000),
+          content: taskName,
+          isDone: false,
+        },
+      ]);
       setTaskName("");
       setCountCreated(countCreated + 1);
     }
   }
 
-  function handleConfirmRemove(name: string) {
-    setTasks((oldstate) => oldstate.filter((task) => task !== name));
+  function handleConfirmRemove(id: number) {
+    setTasks((oldstate) => oldstate.filter((task) => task.id !== id));
     setCountCreated(countCreated - 1);
   }
 
-  function handleRemoveTask(name: string) {
-    Alert.alert("Ooops!", `Você deseja deletar a seguinte task: "${name}" ?`, [
-      {
-        text: "Sim",
-        onPress: () => handleConfirmRemove(name),
-      },
-      { text: "Não" },
-    ]);
+  function handleRemoveTask(task: ITasks) {
+    Alert.alert(
+      "Ooops!",
+      `Você deseja deletar a seguinte task: "${task.content}" ?`,
+      [
+        {
+          text: "Sim",
+          onPress: () => handleConfirmRemove(task.id),
+        },
+        { text: "Não" },
+      ]
+    );
   }
-  function handleChangeChecked(task: any) {
-    setIsChecked(!isChecked);
+  function handleChangeChecked(id: number) {
+    const newList = tasks.map((item) =>
+      item.id === id ? { ...item, isDone: !item.isDone } : item
+    );
+    setTasks(newList);
   }
   return (
     <>
@@ -82,13 +102,13 @@ export function Home() {
 
         <FlatList
           data={tasks}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => String(item.id)}
           renderItem={({ item }) => (
             <Task
-              key={item}
-              taskName={item}
-              checked={isChecked}
-              onChangeValue={() => handleChangeChecked(item)}
+              key={item.id}
+              taskName={item.content}
+              checked={item.isDone}
+              onChangeValue={() => handleChangeChecked(item.id)}
               onRemove={() => handleRemoveTask(item)}
             />
           )}

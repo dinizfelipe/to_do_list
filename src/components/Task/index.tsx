@@ -27,7 +27,11 @@ export default function Task({
         value={checked}
         onValueChange={onChangeValue}
       />
-      <Text style={styles.taskName}>{taskName}</Text>
+      {checked ? (
+        <Text style={styles.taskDone}>{taskName}</Text>
+      ) : (
+        <Text style={styles.taskUndone}>{taskName}</Text>
+      )}
 
       <TouchableOpacity onPress={onRemove} style={styles.button}>
         <Icon name="trash-o" color={"#fff"} size={30} />

@@ -9,11 +9,18 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
   },
-  taskName: {
+  taskUndone: {
     flex: 1,
     fontSize: 15,
     color: "#fff",
     padding: 10,
+  },
+  taskDone: {
+    flex: 1,
+    fontSize: 15,
+    color: "#fff",
+    padding: 10,
+    textDecorationLine: "underline line-through",
   },
   button: {
     borderColor: "#fff",
