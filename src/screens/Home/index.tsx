@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   View,
   Text,
@@ -21,11 +21,17 @@ interface ITasks {
 }
 
 export function Home() {
-  const [isChecked, setIsChecked] = useState(false);
   const [tasks, setTasks] = useState<ITasks[]>([]);
   const [taskName, setTaskName] = useState("");
-  const [countCreated, setCountCreated] = useState(0);
-  const [countDone, setCountDone] = useState(0);
+
+  const counts = useMemo(() => {
+    const createds = tasks.length;
+    const dones = tasks.filter((item) => item.isDone === true).length;
+    return {
+      createds,
+      dones,
+    };
+  }, [tasks]);
 
   function handleAddTask() {
     if (taskName === "") {
@@ -40,13 +46,11 @@ export function Home() {
         },
       ]);
       setTaskName("");
-      setCountCreated(countCreated + 1);
     }
   }
 
   function handleConfirmRemove(id: number) {
     setTasks((oldstate) => oldstate.filter((task) => task.id !== id));
-    setCountCreated(countCreated - 1);
   }
 
   function handleRemoveTask(task: ITasks) {
@@ -96,8 +100,10 @@ export function Home() {
         </View>
 
         <View style={styles.containerCounts}>
-          <Text style={styles.textCountCreated}>Criadas: {countCreated}</Text>
-          <Text style={styles.textCountDone}>Concluídas: {countDone}</Text>
+          <Text style={styles.textCountCreated}>
+            Criadas: {counts.createds}
+          </Text>
+          <Text style={styles.textCountDone}>Concluídas: {counts.dones}</Text>
         </View>
 
         <FlatList
